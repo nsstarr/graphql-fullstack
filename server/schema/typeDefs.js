@@ -1,5 +1,8 @@
 const { gql } = require('apollo-server')
 
+/*
+query -> users -> favouriteMovies
+*/
 const typeDefs = gql`
   type User {
     id: ID!
@@ -19,7 +22,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    users: [User!]!
+    users: UsersResult
     user(id: ID!): User!
     movies: [Movie!]!
     movie(name: String!): Movie!
@@ -49,6 +52,16 @@ const typeDefs = gql`
     GERMANY
     CHILE
   }
+
+  type UsersSuccessfulResult {
+    users: [User!]!
+  }
+
+  type UsersErrorResult {
+    message: String!
+  }
+
+  union UsersResult = UsersSuccessfulResult | UsersErrorResult
 `
 
 module.exports = { typeDefs }

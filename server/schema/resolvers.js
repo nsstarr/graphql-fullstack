@@ -5,9 +5,11 @@ const resolvers = {
   Query: {
     //User Resolvers
     users: () => {
-      return UserList
+      if (UserList) return { users: UserList }
+
+      return { message: 'There was an error' }
     },
-    user: (parent, args) => {
+    user: (parent, args, context, info) => {
       const id = args.id
       const user = _.find(UserList, { id: Number(id) })
       return user
@@ -53,9 +55,22 @@ const resolvers = {
     },
     deleteUser: (parent, args) => {
       const id = args.id
-      _.remove(UserList, (user) => user.id === Number(id))
+      _.remove(UserList, user => user.id === Number(id))
       return null
-    }
+    },
+  },
+  UsersResult: {
+    __resolveType(obj) {
+      if (obj.users) {
+        return 'UsersSuccessfulResult'
+      }
+
+     if (obj.message) {
+      return 'UsersErrorResult'
+     }
+
+     return null
+    },
   },
 }
 
