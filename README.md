@@ -1,1 +1,1 @@
-# graphql-countries
+# graphql-fullstack
